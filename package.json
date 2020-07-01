@@ -1,0 +1,16 @@
+{
+  "name": "nailsproject",
+  "version": "1.0.0",
+  "description": "App provide service for customer booking and manage store",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app"
+  },
+  "author": "Tu Dang",
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "sequelize": "^6.2.4"
+  }
+}
