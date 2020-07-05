@@ -1,27 +1,33 @@
-var sql = require('mssql');
-const { request } = require('express');
-require("dotenv").config();
+const { Sequelize, DataTypes } = require('sequelize');
 
-// config for your database
-var config = {
-    user: process.env.SQL_USER,
-    password: process.env.SQL_PASSWORD,
-    server: process.env.SQL_HOST, 
-    database: process.env.SQL_DATABASE        
-};
-let _db;
+let _connection
 
-function inItDb(){
-    sql.connect(config);
-    _db = sql;
+function InitDatabase() {
+    //Connect to database 
+    _connection = new Sequelize('db','username',null,{
+        storage: 'D:/Project/NailsApi/tipsandtoesnodejs/db.sqlite',
+        dialect: 'sqlite'
+      });
+
+    //Check database connection
+    checkConnection();
 }
 
-// Get DbContext
-function getDb() { 
-    return _db;
-}   
+function checkConnection(){
+_connection
+  .authenticate()
+    .then(()=> {
+      console.log('Connection to database established successfully');
+    })
+    .catch(err => {
+      console.error('Unable to connect to the database', err);
+    })
+}
 
-module.exports = {
-    getDb,
-    inItDb
-};
+//Define database structure
+function setupDatabaseSchema() {
+  
+}
+
+module.exports =  { InitDatabase,
+                    connection: _connection }  
