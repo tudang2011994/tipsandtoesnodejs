@@ -1,46 +1,23 @@
 const express = require('express');
 const app = express();
-const { Sequelize, DataTypes } = require('sequelize');
- let { InitDatabase } = require('./db.js');
-InitDatabase();
- 
-require("dotenv").config();
+const { db } = require('./db.js');
+const users = require('./Controller/UserController.js');
+const schedule = require('./Controller/SheduleController.js');
+const services = require('./Controller/ServicesController.js');
+const packages = require('./Controller/PackagesController.js');
+const bodyParser= require('body-parser');
 
-// config for your database
-var config = {
-  user: process.env.SQL_USER,
-  password: process.env.SQL_PASSWORD,
-  server: process.env.SQL_HOST,
-  database: process.env.SQL_DATABASE
-};
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
+app.use(bodyParser.json());
+app.use('/user',users);
+app.use('/schedule',schedule);
+app.use('/services',services);
+app.use('/packages',packages)
 
-// const connection = new Sequelize('db','username',null,{
-//   storage: 'D:/Project/NailsApi/tipsandtoesnodejs/db.sqlite',
-//   dialect: 'sqlite'
-// });
+//Init database get connection context
+db.sequelize.sync({ force: false }).then(() => {
+  app.listen(5000, () => console.log('App listen on port 5000'));
+});
 
-// connection
-//   .authenticate()
-//     .then(()=> {
-//       console.log('Connection to database established successfully');
-//     })
-//     .catch(err => {
-//       console.error('Unable to connect to the database', err);
-//     })
-
-//     const User = connection.define('User', {
-//       // Model attributes are defined here
-//       firstName: {
-//         type: DataTypes.STRING,
-//         allowNull: false
-//       },
-//       lastName: {
-//         type: DataTypes.STRING
-//         // allowNull defaults to true
-//       }
-//     }, {
-//       // Other model options go here
-//     });
-
-//     connection.sync();
-app.listen(5000, () => console.log('App listen on port 5000'));
